@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            padding: 20px;
+            width: 320px;
+            background-color: #ffffff;
+            color: #202124;
+        }
+
+        h2 {
+            font-size: 16px;
+            margin: 0 0 16px 0;
+            font-weight: 500;
+            color: #202124;
+        }
+
+        /* Input Group */
+        .input-group {
+            margin-bottom: 12px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 13px;
+            margin-bottom: 8px;
+            transition: border 0.2s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #1a73e8;
+            border-width: 2px;
+            padding: 9px; /* Adjust for border width */
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 10px;
+            border-radius: 20px;
+            border: none;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #1a73e8;
+            color: white;
+        }
+        .btn-primary:hover { background-color: #1557b0; }
+
+        .btn-secondary {
+            background-color: #f1f3f4;
+            color: #3c4043;
+        }
+        .btn-secondary:hover { background-color: #e8eaed; }
+
+        /* Path Display */
+        #pickPath {
+            text-align: left;
+            position: relative;
+            padding-left: 16px;
+        }
+        
+        #pickPath.selected {
+            color: #137333;
+            background-color: #e6f4ea;
+        }
+
+        /* List */
+        h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #5f6368;
+            margin: 20px 0 10px 0;
+            letter-spacing: 0.5px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            background: #ffffff;
+            border: 1px solid #e8eaed;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bucket-path {
+            font-size: 11px;
+            color: #9aa0a6;
+            margin-left: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+        }
+
+        .delete-btn {
+            color: #dadce0;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+        }
+        .delete-btn:hover { color: #d93025; }
+    </style>
+</head>
+<body>
+    <h2>Configure Buckets</h2>
+    
+    <div class="input-group">
+        <input type="text" id="bucketName" placeholder="Bucket Name (e.g. Work)">
+        <button id="pickPath" class="btn btn-secondary">📂 Select Folder...</button>
+        <button id="saveBucket" class="btn btn-primary">Save Bucket</button>
+    </div>
+    
+    <h3>Active Buckets</h3>
+    <ul id="savedList"></ul>
+    
+    <script src="options.js"></script>
+</body>
+</html>

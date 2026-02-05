@@ -1,0 +1,9 @@
+{
+  "name": "com.nate.bucket_sorter",
+  "description": "Native Host for Download Buckets",
+  "path": "C:\\Users\\nshaw0\\Desktop\\BucketProject\\host\\host_wrapper.bat",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://nbdjcglnilhakipojmfflaakmendkjpi/" 
+  ]
+}

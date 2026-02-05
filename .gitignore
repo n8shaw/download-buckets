@@ -1,0 +1,12 @@
+# Python junk
+__pycache__/
+*.py[cod]
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# If you compile later
+build/
+dist/
+*.spec

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        /* Top Section: File Card */
+        .file-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .icon-box {
+            width: 40px;
+            height: 40px;
+            background: #e8f0fe; /* Google Light Blue */
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* Clean SVG Icon */
+        .icon-box svg {
+            width: 20px;
+            height: 20px;
+            fill: #1967d2; /* Google Dark Blue */
+        }
+
+        .text-group {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .filename {
+            font-size: 14px;
+            font-weight: 600;
+            color: #202124;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 210px;
+        }
+
+        .helper-text {
+            font-size: 11px;
+            color: #5f6368;
+            margin-top: 2px;
+        }
+
+        /* Bucket Grid */
+        #bucket-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        /* Modern Pill Buttons */
+        .bucket-btn {
+            background-color: #ffffff;
+            border: 1px solid #dadce0;
+            color: #3c4043;
+            padding: 10px;
+            border-radius: 20px; /* Full rounding */
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .bucket-btn:hover {
+            background-color: #f1f3f4;
+            border-color: #dadce0;
+            color: #202124;
+            transform: translateY(-1px);
+        }
+
+        /* Status Message */
+        #status {
+            margin-top: auto; /* Push to bottom */
+            font-size: 12px;
+            text-align: center;
+            color: #188038;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="file-header">
+        <div class="icon-box">
+            <svg viewBox="0 0 24 24">
+                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+            </svg>
+        </div>
+        <div class="text-group">
+            <div class="filename" id="filename-display">Scanning...</div>
+            <div class="helper-text">Where should this go?</div>
+        </div>
+    </div>
+
+    <div id="bucket-list"></div>
+    <div id="status">Moved Successfully</div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
