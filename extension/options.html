@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <style>
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            padding: 20px;
+            padding: 16px;
             width: 320px;
+            margin: 0;
             background-color: #ffffff;
             color: #202124;
+            box-sizing: border-box;
+        }
+
+        /* Container - no card needed in popup */
+        .options-container {
+            background: #ffffff;
         }
 
         h2 {
@@ -38,7 +46,8 @@
             outline: none;
             border-color: #1a73e8;
             border-width: 2px;
-            padding: 9px; /* Adjust for border width */
+            padding: 9px;
+            /* Adjust for border width */
         }
 
         /* Buttons */
@@ -58,13 +67,19 @@
             background-color: #1a73e8;
             color: white;
         }
-        .btn-primary:hover { background-color: #1557b0; }
+
+        .btn-primary:hover {
+            background-color: #1557b0;
+        }
 
         .btn-secondary {
             background-color: #f1f3f4;
             color: #3c4043;
         }
-        .btn-secondary:hover { background-color: #e8eaed; }
+
+        .btn-secondary:hover {
+            background-color: #e8eaed;
+        }
 
         /* Path Display */
         #pickPath {
@@ -72,7 +87,7 @@
             position: relative;
             padding-left: 16px;
         }
-        
+
         #pickPath.selected {
             color: #137333;
             background-color: #e6f4ea;
@@ -121,21 +136,28 @@
             font-size: 16px;
             padding: 4px;
         }
-        .delete-btn:hover { color: #d93025; }
+
+        .delete-btn:hover {
+            color: #d93025;
+        }
     </style>
 </head>
+
 <body>
-    <h2>Configure Buckets</h2>
-    
-    <div class="input-group">
-        <input type="text" id="bucketName" placeholder="Bucket Name (e.g. Work)">
-        <button id="pickPath" class="btn btn-secondary">📂 Select Folder...</button>
-        <button id="saveBucket" class="btn btn-primary">Save Bucket</button>
+    <div class="options-container">
+        <h2>Configure Buckets</h2>
+
+        <div class="input-group">
+            <input type="text" id="bucketName" placeholder="Bucket Name (e.g. Work)">
+            <button id="pickPath" class="btn btn-secondary">📂 Select Folder...</button>
+            <button id="saveBucket" class="btn btn-primary">Save Bucket</button>
+        </div>
+
+        <h3>Active Buckets</h3>
+        <ul id="savedList"></ul>
     </div>
-    
-    <h3>Active Buckets</h3>
-    <ul id="savedList"></ul>
-    
+
     <script src="options.js"></script>
 </body>
+
 </html>

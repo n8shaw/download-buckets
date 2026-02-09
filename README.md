@@ -4,6 +4,7 @@ A Chrome extension that lets you quickly sort downloads into predefined folders 
 
 ![Chrome Web Store](https://img.shields.io/badge/Chrome-Extension-4285F4?logo=googlechrome&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
+![Windows](https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows)
 
 ## Features
 
@@ -16,40 +17,67 @@ A Chrome extension that lets you quickly sort downloads into predefined folders 
 
 ### 1. Install the Chrome Extension
 
-- Install from [Chrome Web Store](#) *(link coming soon)*
-- Or load unpacked from the `extension/` folder in Developer Mode
+[**Install from Chrome Web Store**](#) *(link coming soon)*
 
-### 2. Install the Companion App
+Or load unpacked from the `extension/` folder in Developer Mode.
 
-The extension requires a small companion app to move files on your system.
+### 2. Install the Companion App (Required)
+
+The extension requires a companion app to move files on your system.
 
 **Windows:**
-1. Download `DownloadBuckets-Setup.exe` from [Releases](../../releases)
+1. Download `DownloadBuckets-Setup.exe` from [**Releases**](../../releases/latest)
 2. Run the installer
-3. Reload the extension
+3. Reload the extension in Chrome
 
 ## Usage
 
-1. Click the extension icon → **Options**
-2. Add buckets by naming them and selecting a folder
-3. Download any file
-4. Click a bucket in the overlay to sort, or use "Choose Location..."
+1. **Click the extension icon** to open bucket settings
+2. **Add buckets** by naming them and selecting a folder
+3. **Download any file** - an overlay will appear
+4. **Click a bucket** to sort, or use "Choose Location..."
 
 ## Building from Source
 
 ### Extension
-Load the `extension/` folder as an unpacked extension in Chrome.
+Load the `extension/` folder as an unpacked extension in `chrome://extensions` (Developer Mode).
 
-### Companion App
+### Companion App (Windows)
 ```bash
 cd host
 pip install pyinstaller
 pyinstaller --onefile --noconsole bucket_engine.py
 ```
 
+Then use [Inno Setup](https://jrsoftware.org/isinfo.php) to compile `installer/installer.iss`.
+
+## Project Structure
+
+```
+download-buckets/
+├── extension/           # Chrome extension source
+│   ├── manifest.json
+│   ├── background.js
+│   ├── overlay.js       # Download notification overlay
+│   ├── popup.js         # Sort popup logic
+│   ├── options.js       # Bucket configuration
+│   └── icons/
+├── host/                # Native messaging host (Python)
+│   ├── bucket_engine.py
+│   └── host_manifest.json.template
+├── installer/           # Inno Setup installer script
+│   └── installer.iss
+└── scripts/             # Build utilities
+    └── build.py
+```
+
 ## Privacy
 
 This extension does not collect, store, or transmit any user data. All operations are performed locally on your device.
+
+## Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests.
 
 ## License
 

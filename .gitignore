@@ -2,12 +2,15 @@
 dist/
 build/
 *.spec
+*.exe
 
 # Python
 __pycache__/
 *.py[cod]
 *.egg-info/
 .eggs/
+venv/
+.venv/
 
 # IDE
 .vscode/
@@ -18,7 +21,17 @@ __pycache__/
 # OS
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Local dev files (contain user-specific paths)
 host/host_manifest.json
+host/host_wrapper.bat
 install.bat
+
+# Temp/dev files - not for public repo
+*.zip
+RELEASE_CHECKLIST.md
+
+# Screenshots (for Chrome Web Store, not source control)
+*.png
+!extension/icons/*.png
