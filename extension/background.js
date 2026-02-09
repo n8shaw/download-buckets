@@ -21,14 +21,9 @@ chrome.downloads.onChanged.addListener((delta) => {
 
       const filename = items[0].filename.split(/[/\\]/).pop();
 
-      chrome.scripting.executeScript({
-        target: { tabId },
-        files: ['overlay.js']
-      }, () => {
-        chrome.tabs.sendMessage(tabId, {
-          action: 'init_overlay',
-          filename
-        });
+      chrome.tabs.sendMessage(tabId, {
+        action: 'init_overlay',
+        filename
       });
     });
   });
