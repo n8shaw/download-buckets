@@ -1,0 +1,9 @@
+{
+  "name": "com.nate.bucket_sorter",
+  "description": "Download Buckets Native Host",
+  "path": "{{INSTALL_PATH}}\\bucket_engine.exe",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://{{EXTENSION_ID}}/"
+  ]
+}

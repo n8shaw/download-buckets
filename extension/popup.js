@@ -1,61 +1,79 @@
-document.addEventListener('DOMContentLoaded', () => {
-    chrome.downloads.search({limit: 1, orderBy: ['-startTime']}, (items) => {
-        const display = document.getElementById('filename-display');
-        
-        if (!items || items.length === 0) {
-            display.textContent = "No recent downloads";
-            return;
-        }
+'use strict';
 
-        const fullFilename = items[0].filename.split(/[/\\]/).pop();
-        display.textContent = fullFilename;
-        display.dataset.full = fullFilename;
-        
-        loadBuckets();
+/**
+ * Download Buckets - Popup
+ * Quick sort interface for most recent download.
+ */
+
+const NATIVE_HOST = 'com.nate.bucket_sorter';
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const filenameEl = document.getElementById('filename-display');
+    const listEl = document.getElementById('bucket-list');
+    const statusEl = document.getElementById('status');
+
+    const downloads = await new Promise(r => chrome.downloads.search({ limit: 1, orderBy: ['-startTime'] }, r));
+
+    if (!downloads?.length) {
+        filenameEl.textContent = 'No recent downloads';
+        return;
+    }
+
+    const filename = downloads[0].filename.split(/[/\\]/).pop();
+    filenameEl.textContent = filename;
+
+    const { buckets = [] } = await new Promise(r => chrome.storage.local.get(['buckets'], r));
+
+    if (!buckets.length) {
+        listEl.innerHTML = '<div style="grid-column:span 2;text-align:center;color:#999;font-size:12px">No buckets configured</div>';
+    }
+
+    buckets.forEach((bucket) => {
+        const btn = document.createElement('button');
+        btn.className = 'bucket-btn';
+        btn.textContent = bucket.name;
+        btn.onclick = () => moveFile(bucket.path, bucket.name);
+        listEl.appendChild(btn);
     });
-});
 
-function loadBuckets() {
-    chrome.storage.local.get(['buckets'], (result) => {
-        const buckets = result.buckets || [];
-        const list = document.getElementById('bucket-list');
+    const customBtn = document.createElement('button');
+    customBtn.className = 'bucket-btn btn-custom';
+    customBtn.textContent = '📁 Choose Location...';
+    customBtn.onclick = pickAndMove;
+    listEl.appendChild(customBtn);
 
-        if (buckets.length === 0) {
-            list.innerHTML = "<div style='grid-column: span 2; text-align: center; color: #999; font-size: 12px;'>No buckets set.<br>Right-click icon > Options</div>";
-            return;
-        }
+    function moveFile(path, name) {
+        showStatus('Moving...', '#5f6368');
+        chrome.runtime.sendNativeMessage(NATIVE_HOST, {
+            action: 'move_file', filename, destination: path
+        }, (response) => handleResponse(response, name));
+    }
 
-        buckets.forEach(bucket => {
-            const btn = document.createElement('button');
-            btn.className = "bucket-btn"; // Uses the new Pill CSS
-            btn.textContent = bucket.name;
-            btn.onclick = () => performMove(bucket.path, bucket.name);
-            list.appendChild(btn);
-        });
-    });
-}
-
-function performMove(path, bucketName) {
-    const filename = document.getElementById('filename-display').dataset.full;
-    const statusDiv = document.getElementById('status');
-
-    statusDiv.textContent = "Moving...";
-    statusDiv.style.color = "#5f6368";
-    statusDiv.style.opacity = "1";
-
-    chrome.runtime.sendNativeMessage('com.nate.bucket_sorter',
-        { action: "move_file", filename: filename, destination: path },
-        (response) => {
-            if (response && response.status === "success") {
-                statusDiv.innerHTML = `✅ Moved to <b>${bucketName}</b>`;
-                statusDiv.style.color = "#188038"; // Google Green
-                
-                // Close faster for a snappier feel
-                setTimeout(() => window.close(), 1000);
+    function pickAndMove() {
+        showStatus('Opening picker...', '#5f6368');
+        chrome.runtime.sendNativeMessage(NATIVE_HOST, {
+            action: 'pick_and_move', filename
+        }, (response) => {
+            if (response?.status === 'cancelled') {
+                statusEl.textContent = '';
             } else {
-                statusDiv.textContent = "Error moving file";
-                statusDiv.style.color = "#d93025";
+                const name = response?.path?.split(/[/\\]/).pop() || 'folder';
+                handleResponse(response, name);
             }
+        });
+    }
+
+    function handleResponse(response, name) {
+        if (response?.status === 'success') {
+            showStatus(`✅ Moved to <b>${name}</b>`, '#188038');
+            setTimeout(() => window.close(), 1000);
+        } else {
+            showStatus('Error moving file', '#d93025');
         }
-    );
-}
+    }
+
+    function showStatus(msg, color) {
+        statusEl.innerHTML = msg;
+        statusEl.style.color = color;
+    }
+});

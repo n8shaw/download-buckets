@@ -44,11 +44,33 @@ def move_file(filename, destination_folder):
 while True:
     try:
         msg = read_message()
-        if msg['action'] == 'pick_folder':
+        action = msg.get('action')
+        
+        if action == 'pick_folder':
             path = pick_folder()
             send_message({"path": path})
-        elif msg['action'] == 'move_file':
+        
+        elif action == 'move_file':
             result = move_file(msg['filename'], msg['destination'])
             send_message(result)
+        
+        elif action == 'open_file':
+            downloads_path = os.path.expanduser("~/Downloads")
+            file_path = os.path.join(downloads_path, msg['filename'])
+            if os.path.exists(file_path):
+                os.startfile(file_path)
+                send_message({"status": "success"})
+            else:
+                send_message({"status": "error", "code": "NOT_FOUND"})
+        
+        elif action == 'pick_and_move':
+            # Combined action: pick folder then move file
+            path = pick_folder()
+            if path:
+                result = move_file(msg['filename'], path)
+                result['path'] = path
+                send_message(result)
+            else:
+                send_message({"status": "cancelled"})
     except:
         pass

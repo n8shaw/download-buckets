@@ -1,12 +1,24 @@
-# Python junk
+# Build artifacts
+dist/
+build/
+*.spec
+
+# Python
 __pycache__/
 *.py[cod]
+*.egg-info/
+.eggs/
 
-# OS junk
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
 .DS_Store
 Thumbs.db
 
-# If you compile later
-build/
-dist/
-*.spec
+# Local dev files (contain user-specific paths)
+host/host_manifest.json
+install.bat

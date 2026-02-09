@@ -10,7 +10,7 @@
             padding: 16px;
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            min-height: 200px;
             box-sizing: border-box;
             overflow: hidden;
         }
@@ -26,7 +26,7 @@
         .icon-box {
             width: 40px;
             height: 40px;
-            background: #e8f0fe; /* Google Light Blue */
+            background: #e8f0fe;
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -34,11 +34,10 @@
             flex-shrink: 0;
         }
 
-        /* Clean SVG Icon */
         .icon-box svg {
             width: 20px;
             height: 20px;
-            fill: #1967d2; /* Google Dark Blue */
+            fill: #1967d2;
         }
 
         .text-group {
@@ -70,13 +69,13 @@
             gap: 8px;
         }
 
-        /* Modern Pill Buttons */
+        /* Bucket Buttons */
         .bucket-btn {
             background-color: #ffffff;
             border: 1px solid #dadce0;
             color: #3c4043;
             padding: 10px;
-            border-radius: 20px; /* Full rounding */
+            border-radius: 20px;
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
@@ -91,15 +90,28 @@
             transform: translateY(-1px);
         }
 
+        /* Custom Location Button */
+        .btn-custom {
+            grid-column: span 2;
+            background: #f8f9fa;
+            border: 1px dashed #dadce0;
+            color: #5f6368;
+        }
+        
+        .btn-custom:hover {
+            background: #e8f0fe;
+            border-color: #1967d2;
+            border-style: solid;
+            color: #1967d2;
+        }
+
         /* Status Message */
         #status {
-            margin-top: auto; /* Push to bottom */
+            margin-top: 16px;
             font-size: 12px;
             text-align: center;
-            color: #188038;
             font-weight: 500;
-            opacity: 0;
-            transition: opacity 0.3s;
+            min-height: 18px;
         }
     </style>
 </head>
@@ -117,7 +129,7 @@
     </div>
 
     <div id="bucket-list"></div>
-    <div id="status">Moved Successfully</div>
+    <div id="status"></div>
 
     <script src="popup.js"></script>
 </body>

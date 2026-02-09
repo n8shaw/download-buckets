@@ -1,43 +1,62 @@
-// 1. Try to suppress the native download shelf/bubble
+'use strict';
+
+/**
+ * Download Buckets - Service Worker
+ * Handles download events and message routing.
+ */
+
+const NATIVE_HOST = 'com.nate.bucket_sorter';
+
 chrome.downloads.setShelfEnabled(false);
 
-// 2. Listen for Download Finish
 chrome.downloads.onChanged.addListener((delta) => {
-  if (delta.state && delta.state.current === 'complete') {
-    // Inject the overlay into the current tab
-    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-      if (tabs[0] && tabs[0].id) {
-        // Find the filename
-        chrome.downloads.search({id: delta.id}, (items) => {
-            if (!items || !items.length) return;
-            const filename = items[0].filename.split(/[/\\]/).pop();
+  if (delta.state?.current !== 'complete') return;
 
-            // Execute the overlay script, passing the filename
-            chrome.scripting.executeScript({
-              target: { tabId: tabs[0].id },
-              files: ['overlay.js']
-            }, () => {
-              // Send the filename TO the injected script
-              chrome.tabs.sendMessage(tabs[0].id, {
-                action: "init_overlay", 
-                filename: filename
-              });
-            });
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    const tabId = tabs[0]?.id;
+    if (!tabId) return;
+
+    chrome.downloads.search({ id: delta.id }, (items) => {
+      if (!items?.length) return;
+
+      const filename = items[0].filename.split(/[/\\]/).pop();
+
+      chrome.scripting.executeScript({
+        target: { tabId },
+        files: ['overlay.js']
+      }, () => {
+        chrome.tabs.sendMessage(tabId, {
+          action: 'init_overlay',
+          filename
         });
-      }
+      });
     });
-  }
+  });
 });
 
-// 3. Middleman: Relay messages from Overlay -> Python
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg.action === "move_file_request") {
-    chrome.runtime.sendNativeMessage('com.nate.bucket_sorter',
-      { action: "move_file", filename: msg.filename, destination: msg.path },
-      (nativeResponse) => {
-        sendResponse(nativeResponse);
-      }
-    );
-    return true; // Keep channel open for async response
+  if (msg.action === 'open_file_request') {
+    chrome.runtime.sendNativeMessage(NATIVE_HOST, {
+      action: 'open_file',
+      filename: msg.filename
+    }, sendResponse);
+    return true;
+  }
+
+  if (msg.action === 'move_file_request') {
+    chrome.runtime.sendNativeMessage(NATIVE_HOST, {
+      action: 'move_file',
+      filename: msg.filename,
+      destination: msg.path
+    }, sendResponse);
+    return true;
+  }
+
+  if (msg.action === 'pick_and_move_request') {
+    chrome.runtime.sendNativeMessage(NATIVE_HOST, {
+      action: 'pick_and_move',
+      filename: msg.filename
+    }, sendResponse);
+    return true;
   }
 });
