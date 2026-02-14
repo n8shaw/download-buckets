@@ -2,12 +2,12 @@
 ; Inno Setup Script - https://jrsoftware.org/isinfo.php
 
 #define MyAppName "Download Buckets"
-#define MyAppVersion "2.3"
+#define MyAppVersion "2.4"
 #define MyAppPublisher "Nate Shaw"
 #define MyAppURL "https://github.com/n8shaw/download-buckets"
 
-; IMPORTANT: Update this with your Chrome extension ID after publishing
-#define ExtensionID "YOUR_EXTENSION_ID_HERE"
+;Chrome extension ID
+#define ExtensionID "ooainfmgmlpcejeoglpoahnmippkfbhd"
 
 [Setup]
 AppId={{8F3C2B1A-4D5E-6F7A-8B9C-0D1E2F3A4B5C}
